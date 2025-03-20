@@ -1,7 +1,5 @@
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:task_1_ios_app/screens/register/register_screen.dart';
-import 'package:task_1_ios_app/utility/app-color.dart';
+import 'package:task_1_ios_app/my-imports.dart';
+import 'package:task_1_ios_app/presentation/screens/home-screen/home-screen.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
@@ -61,7 +59,8 @@ class _LogInScreenState extends State<LogInScreen> {
                     onPressed: _onTapNextButton,
                     child: const Text(
                       'Login',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
@@ -86,7 +85,7 @@ class _LogInScreenState extends State<LogInScreen> {
                       ),
                       children: [
                         TextSpan(
-                          text: 'Sign Up',
+                          text: 'Register',
                           style: TextStyle(color: AppColors.themeColor),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
@@ -113,7 +112,7 @@ class _LogInScreenState extends State<LogInScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const Register(),
+        builder: (context) => const HomeScreen(),
       ),
     );
   }
