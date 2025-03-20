@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:task_1_ios_app/screens/register/register_screen.dart';
-import 'package:task_1_ios_app/utility/app_color.dart';
+import 'package:task_1_ios_app/utility/app-color.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});

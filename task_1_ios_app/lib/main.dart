@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_1_ios_app/screens/home_screen/home_screen.dart';
-import 'package:task_1_ios_app/screens/login/login_screen.dart';
+import 'package:task_1_ios_app/screens/login/login-screen.dart';
 
 void main() {
   runApp(const MyApp());

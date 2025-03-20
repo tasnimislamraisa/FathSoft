@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:task_1_ios_app/screens/login/login_screen.dart';
-import 'package:task_1_ios_app/utility/app_color.dart';
+import 'package:task_1_ios_app/screens/login/login-screen.dart';
+import 'package:task_1_ios_app/utility/app-color.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
