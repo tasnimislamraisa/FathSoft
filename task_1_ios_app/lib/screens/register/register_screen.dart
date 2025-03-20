@@ -14,21 +14,14 @@ class _RegisterState extends State<Register> {
   final TextEditingController _fnTEController = TextEditingController();
   final TextEditingController _emailTEController = TextEditingController();
   final TextEditingController _passwordTEController = TextEditingController();
-
-
-  GlobalKey<FormState> _formState = GlobalKey<FormState>();
   bool _showPassword = false;
-  bool _registrationInProgress = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
           padding: const EdgeInsets.all(30.0),
           child: SingleChildScrollView(
-            child: Form(
-              key: _formState,
-              child: Column(
+            child:Column(
                 children: [
                   const SizedBox(height: 120),
                   Text(
@@ -49,13 +42,7 @@ class _RegisterState extends State<Register> {
                   const SizedBox(height: 10),
                   TextFormField(
                     controller: _fnTEController,
-                    decoration: InputDecoration(hintText: 'First Name'),
-                    validator: (value) {
-                      if (value?.trim().isEmpty ?? true) {
-                        return 'Enter your name correctly';
-                      }
-                      return null;
-                    },
+                    decoration: InputDecoration(hintText: 'Name'),
                   ),
                   const SizedBox(height: 10),
                   TextFormField(
@@ -83,16 +70,13 @@ class _RegisterState extends State<Register> {
                     },
                   ),
                   const SizedBox(height: 10),
-                  Visibility(
-                    visible: _registrationInProgress == false,
-                    replacement: Center(child: CircularProgressIndicator()),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formState.currentState!.validate()) {
-                          _registerUser();
-                        }
-                      },
-                      child: Icon(Icons.arrow_forward_ios_outlined),
+                  Center(
+                    child: TextButton(
+                      onPressed: _registerUser,
+                      child: const Text(
+                        'Register',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -127,7 +111,7 @@ class _RegisterState extends State<Register> {
                   )
                 ],
               ),
-            ),
+
           ),
         ),
     );

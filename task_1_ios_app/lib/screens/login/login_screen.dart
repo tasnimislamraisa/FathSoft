@@ -19,104 +19,103 @@ class _LogInScreenState extends State<LogInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formState,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 160),
-                  Text(
-                    'Get Started With',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    controller: _emailTEController,
-                    decoration: InputDecoration(hintText: 'Email'),
-                    keyboardType: TextInputType.emailAddress,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Enter Email Address';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    controller: _passwordTEController,
-                    decoration: InputDecoration(hintText: 'Password'),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Enter your password';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 10),
-               ElevatedButton(
-                        onPressed: () {
-                          _onTapNextButton();
-                        },
-                        child: const Icon(
-                          Icons.arrow_forward_ios_outlined,
-                        ),
-                      ),
-                  const SizedBox(height: 10),
-                  Center(
-                    child: TextButton(
-                      onPressed: _onTapForgetPassword,
-                      child: Text(
-                        'Forget Password?',
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
+        padding: const EdgeInsets.all(30.0),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formState,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 160),
+                Text(
+                  'Get Started With',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _emailTEController,
+                  decoration: InputDecoration(hintText: 'Email'),
+                  keyboardType: TextInputType.emailAddress,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Enter Email Address';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _passwordTEController,
+                  decoration: InputDecoration(hintText: 'Password'),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Enter your password';
+                    }
+                  },
+                ),
+                const SizedBox(height: 10),
+                Center(
+                  child: TextButton(
+                    onPressed: _onTapNextButton,
+                    child: const Text(
+                      'Login',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                   ),
-                  Center(
-                    child: RichText(
-                      text: TextSpan(
-                        text: 'Don\'t have an account? ',
-                        style: TextStyle(
-                          color: Colors.black.withOpacity(0.8),
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.4,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: 'Sign Up',
-                            style: TextStyle(color: AppColors.themeColor),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Register(),
-                                    ));
-                              },
-                          ),
-                        ],
-                      ),
+                ),
+                const SizedBox(height: 10),
+                Center(
+                  child: TextButton(
+                    onPressed: _onTapForgetPassword,
+                    child: Text(
+                      'Forget Password?',
+                      style: Theme.of(context).textTheme.titleSmall,
                     ),
-                  )
-                ],
-              ),
+                  ),
+                ),
+                Center(
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'Don\'t have an account? ',
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(0.8),
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.4,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'Sign Up',
+                          style: TextStyle(color: AppColors.themeColor),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Register(),
+                                  ));
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
         ),
-
+      ),
     );
   }
 
   void _onTapNextButton() {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const Register(),
-          ),
-        );
-
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const Register(),
+      ),
+    );
   }
 
   void _onTapForgetPassword() {
@@ -138,6 +137,3 @@ class _LogInScreenState extends State<LogInScreen> {
     super.dispose();
   }
 }
-
-
-
