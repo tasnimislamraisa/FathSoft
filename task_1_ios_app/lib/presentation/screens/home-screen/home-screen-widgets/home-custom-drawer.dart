@@ -1,4 +1,5 @@
 import 'package:task_1_ios_app/my-imports.dart';
+import 'package:task_1_ios_app/presentation/screens/dashboard-screen/land-property-screen.dart';
 import 'package:task_1_ios_app/presentation/screens/dashboard-screen/rats-apartment-screen.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -66,7 +67,7 @@ class CustomDrawer extends StatelessWidget {
                       label: 'Land/Property',
                       selectedItem: selectedItem,
                       onTap: () {
-                        // TODO: Navigation or state update
+                        Get.to(() => const LandPropertyScreen());
                       },
                     ),
                   ],

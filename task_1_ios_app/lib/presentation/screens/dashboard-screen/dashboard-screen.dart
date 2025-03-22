@@ -55,16 +55,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xfff9f9fb),
-      appBar: AppBar(
-        title: const Text('Dashboard',
-            style: TextStyle(fontWeight: FontWeight.bold)),
-        elevation: 0,
-        actions: [
-          IconButton(
-              onPressed: () {}, icon: const Icon(Icons.wb_sunny_outlined)),
-          BuildProfileMenu(),
-        ],
-      ),
+      appBar: DashBoardAppBar(),
       drawer: CustomDrawer(
         selectedItem: '',
       ),

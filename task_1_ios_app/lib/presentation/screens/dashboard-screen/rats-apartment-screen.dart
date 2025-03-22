@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:task_1_ios_app/my-imports.dart';
 
 class RatsOrApartmentScreen extends StatefulWidget {
   const RatsOrApartmentScreen({super.key});
@@ -16,26 +15,12 @@ class _RatsOrApartmentScreenState extends State<RatsOrApartmentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff9f9fb),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: const Text('Dashboard', style: TextStyle(color: Colors.black)),
-        iconTheme: const IconThemeData(color: Colors.black),
-        actions: const [
-          Icon(Icons.wb_sunny_outlined),
-          SizedBox(width: 12),
-          CircleAvatar(
-            backgroundColor: Colors.black12,
-            child: Text('SC', style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          SizedBox(width: 16),
-        ],
-      ),
+      backgroundColor: AppColors.bgColor,
+      appBar: DashBoardAppBar(),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          _filterCard(),
+          FilterCard(),
           const SizedBox(height: 12),
           _gradientCard('Sales Amount', '00 TK', '📈', Colors.blue),
           _gradientCard('Purchase Amount', '00 TK', '🛍️', Colors.deepOrange),
@@ -59,72 +44,6 @@ class _RatsOrApartmentScreenState extends State<RatsOrApartmentScreen> {
           _areaChartPlaceholder(),
           const SizedBox(height: 20),
           _donutChartPlaceholder(),
-        ],
-      ),
-    );
-  }
-
-  Widget _filterCard() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6)],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(children: const [
-                Icon(Icons.filter_list),
-                SizedBox(width: 8),
-                Text("Filter")
-              ]),
-              GestureDetector(
-                onTap: () async {
-                  final picked = await showDatePicker(
-                    context: context,
-                    initialDate: selectedDate ?? DateTime.now(),
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2100),
-                  );
-                  if (picked != null) {
-                    setState(() {
-                      selectedDate = picked;
-                    });
-                  }
-                },
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey.shade300),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.calendar_month_outlined),
-                      const SizedBox(width: 6),
-                      Text(selectedDate != null
-                          ? DateFormat('MMMM dd, yyyy').format(selectedDate!)
-                          : 'Pick a date'),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              _textField("Select Project", projectController),
-              const SizedBox(width: 16),
-              _textField("Choose a Building", buildingController),
-            ],
-          )
         ],
       ),
     );
@@ -239,25 +158,162 @@ class _RatsOrApartmentScreenState extends State<RatsOrApartmentScreen> {
 
   Widget _areaChartPlaceholder() {
     return Container(
-      height: 200,
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
       ),
-      child: const Center(child: Text("Area Chart Placeholder")),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 200,
+            child: LineChart(
+              LineChartData(
+                gridData: FlGridData(show: false),
+                titlesData: FlTitlesData(
+                  leftTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  rightTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      interval: 1,
+                      getTitlesWidget: (value, meta) {
+                        const months = [
+                          'Jan',
+                          'Feb',
+                          'Mar',
+                          'Apr',
+                          'May',
+                          'Jun'
+                        ];
+                        return Text(
+                          months[value.toInt()],
+                          style: const TextStyle(fontSize: 12),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                borderData: FlBorderData(show: false),
+                lineBarsData: [
+                  // Desktop
+                  LineChartBarData(
+                    isCurved: true,
+                    spots: const [
+                      FlSpot(0, 50),
+                      FlSpot(1, 130),
+                      FlSpot(2, 90),
+                      FlSpot(3, 95),
+                      FlSpot(4, 120),
+                      FlSpot(5, 120),
+                    ],
+                    color: Colors.blue.shade300,
+                    barWidth: 2,
+                    isStrokeCapRound: true,
+                    belowBarData: BarAreaData(
+                      show: true,
+                      color: Colors.blue.shade300.withOpacity(0.4),
+                    ),
+                    dotData: FlDotData(show: false),
+                  ),
+                  // Mobile
+                  LineChartBarData(
+                    isCurved: true,
+                    spots: const [
+                      FlSpot(0, 20),
+                      FlSpot(1, 60),
+                      FlSpot(2, 50),
+                      FlSpot(3, 65),
+                      FlSpot(4, 55),
+                      FlSpot(5, 65),
+                    ],
+                    color: Colors.blue.shade100,
+                    barWidth: 2,
+                    isStrokeCapRound: true,
+                    belowBarData: BarAreaData(
+                      show: true,
+                      color: Colors.teal.shade200.withOpacity(0.3),
+                    ),
+                    dotData: FlDotData(show: false),
+                  ),
+                ],
+                minY: 0,
+                maxY: 140,
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _legendDot(Colors.teal.shade200, "Mobile"),
+              const SizedBox(width: 20),
+              _legendDot(Colors.blue.shade300, "Desktop"),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _legendDot(Color color, String label) {
+    return Row(
+      children: [
+        Container(
+          width: 10,
+          height: 10,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: 6),
+        Text(label, style: const TextStyle(fontSize: 13)),
+      ],
     );
   }
 
   Widget _donutChartPlaceholder() {
     return Container(
-      height: 200,
+      height: 220,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
       ),
-      child: const Center(child: Text("Donut Chart Placeholder")),
+      child: PieChart(
+        PieChartData(
+          centerSpaceRadius: 48,
+          sectionsSpace: 2,
+          sections: [
+            PieChartSectionData(
+              color: Colors.green.shade400,
+              value: 40,
+              title: '',
+              radius: 40,
+            ),
+            PieChartSectionData(
+              color: Colors.green.shade600,
+              value: 35,
+              title: '',
+              radius: 40,
+            ),
+            PieChartSectionData(
+              color: Colors.teal.shade300,
+              value: 25,
+              title: '',
+              radius: 40,
+            ),
+          ],
+          pieTouchData: PieTouchData(enabled: true),
+        ),
+      ),
     );
   }
 }
