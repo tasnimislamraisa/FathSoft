@@ -10,5 +10,6 @@ class ControllerBinder extends Bindings {
       authController: Get.find<AuthController>(),
     ));
     Get.put(AuthController());
+    Get.put(BottomNavbarController());
   }
 }

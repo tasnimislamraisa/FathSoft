@@ -1,5 +1,4 @@
 import 'package:task_1_ios_app/my-imports.dart';
-import 'package:task_1_ios_app/presentation/screens/home-screen/home-screen.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
@@ -112,7 +111,7 @@ class _LogInScreenState extends State<LogInScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const HomeScreen(),
+        builder: (context) => const BottomNavBarScreen(),
       ),
     );
   }
