@@ -1,4 +1,3 @@
-import 'package:task_1_ios_app/controller_binder.dart';
 import 'package:task_1_ios_app/my-imports.dart';
 
 void main() {
@@ -8,13 +7,23 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'IOS App',
+      debugShowCheckedModeBanner: false,
       initialBinding: ControllerBinder(),
       home: const LogInScreen(),
+
+      // Localization support
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'), // Add more locales here if needed
+      ],
     );
   }
 }
