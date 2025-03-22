@@ -10,8 +10,29 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   bool showDropdown = false;
+  bool showFilters = false;
   DateTimeRange? selectedRange;
   String selectedDateLabel = 'Filter by date';
+  String selectedDateFilter = 'Filter by date';
+  String? selectedLand;
+  String? selectedPlot;
+
+  final List<String> dateOptions = [
+    'Today',
+    'Yesterday',
+    'Last 7 Days',
+    'Last 30 Days',
+    'This Month',
+    'Last Month',
+    'Custom Range'
+  ];
+
+  final List<String> landList = ['Land A', 'Land B', 'Land C'];
+  final Map<String, List<String>> plotMap = {
+    'Land A': ['Plot A1', 'Plot A2'],
+    'Land B': ['Plot B1', 'Plot B2'],
+    'Land C': ['Plot C1', 'Plot C2'],
+  };
 
   void _selectPreset(String label, DateTimeRange range) {
     setState(() {
@@ -47,136 +68,144 @@ class _DashboardScreenState extends State<DashboardScreen> {
       drawer: CustomDrawer(
         selectedItem: '',
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          // Date filter section
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6)],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.menu),
-                  label: const Text('Filter'),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.white,
+                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
                 ),
-                GestureDetector(
-                  onTap: () => setState(() => showDropdown = !showDropdown),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.calendar_month_outlined),
-                      const SizedBox(width: 6),
-                      Text(selectedDateLabel),
-                      const SizedBox(width: 6),
-                      const Icon(Icons.keyboard_arrow_down_rounded),
-                    ],
-                  ),
-                )
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextButton.icon(
+                        onPressed: () {
+                          setState(() => showFilters = !showFilters);
+                        },
+                        icon: Icon(Icons.menu),
+                        label: Text('Filter'),
+                      ),
+                    ),
+                    Expanded(
+                      child: PopupMenuButton<String>(
+                        onSelected: (value) =>
+                            setState(() => selectedDateFilter = value),
+                        itemBuilder: (context) {
+                          return dateOptions
+                              .map((option) => PopupMenuItem(
+                                    value: option,
+                                    child: Text(option),
+                                  ))
+                              .toList();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 12),
+                          height: 44,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Icon(Icons.calendar_today_outlined, size: 18),
+                              Text(
+                                selectedDateFilter,
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              Icon(Icons.expand_more),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (showFilters) ...[
+                const SizedBox(height: 12),
+                _buildDropdownField(
+                  label: 'Select Land',
+                  value: selectedLand,
+                  onChanged: (value) => setState(() {
+                    selectedLand = value;
+                    selectedPlot = null; // reset plot when land changes
+                  }),
+                  items: landList,
+                ),
+                const SizedBox(height: 12),
+                _buildDropdownField(
+                  label: 'Select Plot',
+                  value: selectedPlot,
+                  onChanged: (value) => setState(() => selectedPlot = value),
+                  items: selectedLand == null ? [] : plotMap[selectedLand]!,
+                ),
               ],
+              const SizedBox(height: 16),
+              BuildGradientCard(
+                  'Sales Amount', '12,000 TK', Icons.show_chart, Colors.blue),
+              BuildGradientCard('Purchase Amount', '12,000 TK',
+                  Icons.shopping_bag, Colors.deepOrangeAccent),
+              BuildGradientCard('Payment Due', '12,000 TK', Icons.receipt,
+                  Colors.deepPurpleAccent),
+              BuildGradientCard(
+                  'Receipt Due', '12,000 TK', Icons.receipt_long, Colors.teal),
+              BuildSimpleCard(
+                  'Dpress',
+                  '8,500 TK',
+                  Icons.account_balance_wallet,
+                  Colors.indigoAccent.withOpacity(0.15)),
+              BuildSimpleCard('Salary', '5,000 TK', Icons.credit_card,
+                  Colors.greenAccent.withOpacity(0.15)),
+              BuildSimpleCard('Total Clients', '120', Icons.group,
+                  Colors.redAccent.withOpacity(0.15)),
+              BuildSimpleCard('Total Suppliers', '45', Icons.people_alt,
+                  Colors.amberAccent.withOpacity(0.2)),
+              BuildSimpleCard('Total Employees', '25',
+                  Icons.shopping_bag_outlined, Colors.green.withOpacity(0.15)),
+              const SizedBox(height: 20),
+              BuildChartSection(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropdownField({
+    required String label,
+    required String? value,
+    required void Function(String?) onChanged,
+    required List<String> items,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 6),
+        DropdownButtonFormField<String>(
+          value: value,
+          items: items
+              .map((item) => DropdownMenuItem(value: item, child: Text(item)))
+              .toList(),
+          onChanged: onChanged,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.grey.shade100,
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
             ),
           ),
-
-          const SizedBox(height: 8),
-
-          if (showDropdown)
-            Container(
-              margin: const EdgeInsets.only(top: 8),
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6)],
-              ),
-              child: Column(
-                children: [
-                  _dateOption(
-                      'Today',
-                      DateTimeRange(
-                          start: DateTime.now(), end: DateTime.now())),
-                  _dateOption(
-                      'Yesterday',
-                      DateTimeRange(
-                        start: DateTime.now().subtract(const Duration(days: 1)),
-                        end: DateTime.now().subtract(const Duration(days: 1)),
-                      )),
-                  _dateOption(
-                      'Last 7 Days',
-                      DateTimeRange(
-                        start: DateTime.now().subtract(const Duration(days: 6)),
-                        end: DateTime.now(),
-                      )),
-                  _dateOption(
-                      'Last 30 Days',
-                      DateTimeRange(
-                        start:
-                            DateTime.now().subtract(const Duration(days: 29)),
-                        end: DateTime.now(),
-                      )),
-                  _dateOption(
-                      'This Month',
-                      DateTimeRange(
-                        start: DateTime(
-                            DateTime.now().year, DateTime.now().month, 1),
-                        end: DateTime.now(),
-                      )),
-                  _dateOption(
-                      'Last Month',
-                      DateTimeRange(
-                        start: DateTime(
-                            DateTime.now().year, DateTime.now().month - 1, 1),
-                        end: DateTime(
-                            DateTime.now().year, DateTime.now().month, 0),
-                      )),
-                  ListTile(
-                    title: const Text('Custom Range'),
-                    onTap: () async {
-                      final picked = await showDateRangePicker(
-                        context: context,
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime.now(),
-                        initialDateRange: selectedRange,
-                      );
-                      if (picked != null) _selectCustomRange(picked);
-                    },
-                  ),
-                ],
-              ),
-            ),
-
-          const SizedBox(height: 16),
-
-          // Dashboard cards
-          BuildGradientCard(
-              'Sales Amount', '12,000 TK', Icons.show_chart, Colors.blue),
-          BuildGradientCard('Purchase Amount', '12,000 TK', Icons.shopping_bag,
-              Colors.deepOrangeAccent),
-          BuildGradientCard('Payment Due', '12,000 TK', Icons.receipt,
-              Colors.deepPurpleAccent),
-          BuildGradientCard(
-              'Receipt Due', '12,000 TK', Icons.receipt_long, Colors.teal),
-
-          BuildSimpleCard('Dpress', '8,500 TK', Icons.account_balance_wallet,
-              Colors.indigoAccent.withOpacity(0.15)),
-          BuildSimpleCard('Salary', '5,000 TK', Icons.credit_card,
-              Colors.greenAccent.withOpacity(0.15)),
-          BuildSimpleCard('Total Clients', '120', Icons.group,
-              Colors.redAccent.withOpacity(0.15)),
-          BuildSimpleCard('Total Suppliers', '45', Icons.people_alt,
-              Colors.amberAccent.withOpacity(0.2)),
-          BuildSimpleCard('Total Employees', '25', Icons.shopping_bag_outlined,
-              Colors.green.withOpacity(0.15)),
-
-          const SizedBox(height: 20),
-
-          BuildChartSection(),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class RatsOrApartmentScreen extends StatelessWidget {
+class RatsOrApartmentScreen extends StatefulWidget {
   const RatsOrApartmentScreen({super.key});
+
+  @override
+  State<RatsOrApartmentScreen> createState() => _RatsOrApartmentScreenState();
+}
+
+class _RatsOrApartmentScreenState extends State<RatsOrApartmentScreen> {
+  DateTime? selectedDate;
+  final TextEditingController projectController = TextEditingController();
+  final TextEditingController buildingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -73,19 +83,36 @@ class RatsOrApartmentScreen extends StatelessWidget {
                 SizedBox(width: 8),
                 Text("Filter")
               ]),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.grey.shade300),
-                ),
-                child: Row(
-                  children: const [
-                    Icon(Icons.calendar_month_outlined),
-                    SizedBox(width: 6),
-                    Text("Pick a date"),
-                  ],
+              GestureDetector(
+                onTap: () async {
+                  final picked = await showDatePicker(
+                    context: context,
+                    initialDate: selectedDate ?? DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                  );
+                  if (picked != null) {
+                    setState(() {
+                      selectedDate = picked;
+                    });
+                  }
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.calendar_month_outlined),
+                      const SizedBox(width: 6),
+                      Text(selectedDate != null
+                          ? DateFormat('MMMM dd, yyyy').format(selectedDate!)
+                          : 'Pick a date'),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -93,9 +120,9 @@ class RatsOrApartmentScreen extends StatelessWidget {
           const SizedBox(height: 16),
           Row(
             children: [
-              _filterDropdown("Select Project", "All Project"),
+              _textField("Select Project", projectController),
               const SizedBox(width: 16),
-              _filterDropdown("Choose a Building", "Choose a building"),
+              _textField("Choose a Building", buildingController),
             ],
           )
         ],
@@ -103,20 +130,25 @@ class RatsOrApartmentScreen extends StatelessWidget {
     );
   }
 
-  Widget _filterDropdown(String label, String value) {
+  Widget _textField(String label, TextEditingController controller) {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 6),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.grey.shade100,
+          TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.grey.shade100,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none,
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             ),
-            child: Text(value, style: const TextStyle(color: Colors.grey)),
           )
         ],
       ),
