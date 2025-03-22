@@ -1,4 +1,5 @@
 import 'package:task_1_ios_app/my-imports.dart';
+import 'package:task_1_ios_app/presentation/screens/dashboard-screen/rats-apartment-screen.dart';
 
 class CustomDrawer extends StatelessWidget {
   final String selectedItem;
@@ -29,7 +30,7 @@ class CustomDrawer extends StatelessWidget {
               padding: EdgeInsets.zero,
               physics: ClampingScrollPhysics(),
               children: [
-                // 📊 Dashboard with children
+                // Dashboard with children
                 ExpansionTile(
                   initiallyExpanded: [
                     'Overall Dashboard',
@@ -47,6 +48,7 @@ class CustomDrawer extends StatelessWidget {
                       label: 'Overall Dashboard',
                       selectedItem: selectedItem,
                       onTap: () {
+                        Get.to(() => DashboardScreen());
                         // TODO: Navigation or state update
                       },
                     ),
@@ -56,6 +58,7 @@ class CustomDrawer extends StatelessWidget {
                       selectedItem: selectedItem,
                       onTap: () {
                         // TODO: Navigation or state update
+                        Get.to(() => RatsOrApartmentScreen());
                       },
                     ),
                     DrawerItem(
@@ -69,7 +72,7 @@ class CustomDrawer extends StatelessWidget {
                   ],
                 ),
 
-                // 🌐 Other menu items
+                //  Other menu items
                 DrawerItem(
                   icon: Icons.people_outline,
                   label: 'CRM Management',

@@ -89,13 +89,13 @@ class SalesPerformanceChart extends StatelessWidget {
               lineBarsData: [
                 LineChartBarData(
                   spots: const [
-                    FlSpot(0, 3000),
-                    FlSpot(1, 4300),
-                    FlSpot(2, 3300),
-                    FlSpot(3, 4000),
-                    FlSpot(4, 4300),
-                    FlSpot(5, 3800),
-                    FlSpot(6, 3600),
+                    FlSpot(1.5, 3000),
+                    FlSpot(2.5, 4300),
+                    FlSpot(3.2, 3300),
+                    FlSpot(4.0, 4000),
+                    FlSpot(4.7, 4300),
+                    FlSpot(5.5, 3800),
+                    FlSpot(6.5, 3600),
                   ],
                   isCurved: true,
                   color: Colors.blue,
