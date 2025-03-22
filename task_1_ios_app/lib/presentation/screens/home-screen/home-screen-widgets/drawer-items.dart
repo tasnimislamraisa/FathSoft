@@ -3,33 +3,41 @@ import 'package:task_1_ios_app/my-imports.dart';
 class DrawerItem extends StatelessWidget {
   final IconData icon;
   final String label;
+  final String selectedItem;
   final VoidCallback onTap;
+  final bool hasArrow;
 
   const DrawerItem({
+    super.key,
     required this.icon,
     required this.label,
+    required this.selectedItem,
     required this.onTap,
-    super.key,
+    this.hasArrow = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        child: Row(
-          children: [
-            Icon(icon, size: 20),
-            SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                label,
-                style: TextStyle(fontSize: 15),
-              ),
-            ),
-          ],
+    final bool isSelected = selectedItem == label;
+
+    return Container(
+      color: isSelected ? Colors.blue.shade50 : Colors.transparent,
+      child: ListTile(
+        leading: Icon(
+          icon,
+          color: isSelected ? Colors.blue : Colors.black87,
         ),
+        title: Text(
+          label,
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            color: isSelected ? Colors.blue : Colors.black87,
+          ),
+        ),
+        trailing:
+            hasArrow ? Icon(Icons.chevron_right, color: Colors.black45) : null,
+        onTap: onTap,
       ),
     );
   }

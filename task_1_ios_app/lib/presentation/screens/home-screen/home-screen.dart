@@ -11,7 +11,9 @@ class HomeScreen extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           key: scaffoldKey,
-          drawer: CustomDrawer(),
+          drawer: CustomDrawer(
+            selectedItem: '',
+          ),
           body: Stack(
             children: [
               // Background Header
