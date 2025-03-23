@@ -112,12 +112,46 @@ class CustomDrawer extends StatelessWidget {
                   hasArrow: true,
                   onTap: () {},
                 ),
-                DrawerItem(
-                  icon: Icons.event_note_outlined,
-                  label: 'Project Control',
-                  selectedItem: selectedItem,
-                  hasArrow: true,
-                  onTap: () {},
+                //
+                ExpansionTile(
+                  initiallyExpanded: [
+                    'Project Type',
+                    'Projects',
+                    'Buildings/Sites'
+                  ].contains(selectedItem),
+                  leading: Icon(Icons.grid_view_outlined),
+                  title: Text(
+                    'Project Control',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  children: [
+                    DrawerItem(
+                      icon: Icons.event_note,
+                      label: 'Project Type',
+                      selectedItem: selectedItem,
+                      onTap: () {
+                        Get.to(() => DashboardScreen());
+                        // TODO: Navigation or state update
+                      },
+                    ),
+                    DrawerItem(
+                      icon: Icons.apartment,
+                      label: 'Projects',
+                      selectedItem: selectedItem,
+                      onTap: () {
+                        // TODO: Navigation or state update
+                        Get.to(() => RatsOrApartmentScreen());
+                      },
+                    ),
+                    DrawerItem(
+                      icon: Icons.location_on_outlined,
+                      label: 'Buildings/Sites',
+                      selectedItem: selectedItem,
+                      onTap: () {
+                        Get.to(() => const LandPropertyScreen());
+                      },
+                    ),
+                  ],
                 ),
                 DrawerItem(
                   icon: Icons.stacked_bar_chart_outlined,
