@@ -26,22 +26,38 @@ class ProjectsScreen extends StatelessWidget {
       backgroundColor: AppColors.bgColor,
       appBar: const CustomProjectAppBar(title: 'All Projects'),
       drawer: const CustomDrawer(selectedItem: ''),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
+      body: Column(
         children: [
-          Search(),
-          const SizedBox(height: 16),
-          FilterCard(),
-          const SizedBox(height: 12),
-          const AddButton(title: 'Add Project'),
-          const SizedBox(height: 12),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              width: 720,
-              child: _buildProjectsTable(context, projects),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                Search(),
+                const SizedBox(height: 16),
+                FilterCard(),
+                const SizedBox(height: 12),
+                const AddButton(title: 'Add Project'),
+                const SizedBox(height: 12),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: SizedBox(
+                    width: 720,
+                    child: _buildProjectsTable(context, projects),
+                  ),
+                ),
+              ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: paginationSection(
+              currentPage: 1,
+              totalPages: 3,
+              selectedPageSize: 8,
+              onPageChanged: (newPage) {},
+              onPageSizeChanged: (newSize) {},
+            ),
+          )
         ],
       ),
     );
@@ -94,17 +110,6 @@ class ProjectsScreen extends StatelessWidget {
             ),
           );
         }).toList(),
-        const SizedBox(height: 12),
-        Align(
-          alignment: Alignment.centerRight,
-          child: paginationSection(
-            currentPage: 1,
-            totalPages: 3,
-            selectedPageSize: 8,
-            onPageChanged: (newPage) {},
-            onPageSizeChanged: (newSize) {},
-          ),
-        ),
       ],
     );
   }
@@ -185,35 +190,36 @@ class ProjectsScreen extends StatelessWidget {
   Widget _actionButtons({int flex = 3}) {
     return Expanded(
       flex: flex,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                minimumSize: const Size(60, 30),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+      child: Row(
+        children: [
+          ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              padding: EdgeInsets.zero,
+              minimumSize: const Size(30, 30),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
-              child: const Text("Edit"),
             ),
-            const SizedBox(width: 6),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                minimumSize: const Size(60, 30),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+            child: Icon(Icons.edit),
+          ),
+          const SizedBox(width: 6),
+          ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              minimumSize: const Size(30, 30),
+              padding: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
-              child: const Text("Delete"),
             ),
-          ],
-        ),
+            child: Icon(Icons.delete),
+          ),
+        ],
       ),
     );
   }

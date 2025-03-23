@@ -1,8 +1,4 @@
 import 'package:task_1_ios_app/my-imports.dart';
-import 'package:task_1_ios_app/presentation/screens/dashboard-screen/land-property-screen.dart';
-import 'package:task_1_ios_app/presentation/screens/dashboard-screen/rats-apartment-screen.dart';
-import 'package:task_1_ios_app/presentation/screens/project-control-screen/project-types-screen.dart';
-import 'package:task_1_ios_app/presentation/screens/project-control-screen/projects-screen.dart';
 
 class CustomDrawer extends StatelessWidget {
   final String selectedItem;
@@ -51,8 +47,7 @@ class CustomDrawer extends StatelessWidget {
                       label: 'Overall Dashboard',
                       selectedItem: selectedItem,
                       onTap: () {
-                        Get.to(() => DashboardScreen());
-                        // TODO: Navigation or state update
+                        Get.to(() => const DashboardScreen());
                       },
                     ),
                     DrawerItem(
@@ -132,7 +127,7 @@ class CustomDrawer extends StatelessWidget {
                       label: 'Project Type',
                       selectedItem: selectedItem,
                       onTap: () {
-                        Get.to(() => ProjectTypeScreen());
+                        Get.to(() => const ProjectTypeScreen());
                         // TODO: Navigation or state update
                       },
                     ),
@@ -142,6 +137,7 @@ class CustomDrawer extends StatelessWidget {
                       selectedItem: selectedItem,
                       onTap: () {
                         // TODO: Navigation or state update
+                        Navigator.pop(context);
                         Get.to(() => const ProjectsScreen());
                       },
                     ),
@@ -150,7 +146,7 @@ class CustomDrawer extends StatelessWidget {
                       label: 'Buildings/Sites',
                       selectedItem: selectedItem,
                       onTap: () {
-                        Get.to(() => const LandPropertyScreen());
+                        // Get.to(() => const BuildingsSites());
                       },
                     ),
                   ],

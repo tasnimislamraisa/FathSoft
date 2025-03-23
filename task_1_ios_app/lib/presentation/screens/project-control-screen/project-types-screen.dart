@@ -18,6 +18,7 @@ class ProjectTypeScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Search Box
             Search(),
@@ -25,10 +26,8 @@ class ProjectTypeScreen extends StatelessWidget {
             const SizedBox(height: 12),
 
             // Add Type Button
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [AddButton(title: "Add Type")],
-            ),
+
+            AddButton(title: "Add Type"),
 
             const SizedBox(height: 12),
 
@@ -119,26 +118,24 @@ class ProjectTypeScreen extends StatelessWidget {
                           );
                         },
                       ),
-
                       const SizedBox(height: 10),
-
-                      // Pagination Row
-                      paginationSection(
-                        currentPage: 1,
-                        totalPages: 3,
-                        selectedPageSize: 8,
-                        onPageChanged: (newPage) {
-                          // implement page switch logic
-                        },
-                        onPageSizeChanged: (newSize) {
-                          // update per-page value and refresh
-                        },
-                      ),
                     ],
                   ),
                 ),
               ),
-            )
+            ),
+            // Pagination Row
+            paginationSection(
+              currentPage: 1,
+              totalPages: 3,
+              selectedPageSize: 8,
+              onPageChanged: (newPage) {
+                // implement page switch logic
+              },
+              onPageSizeChanged: (newSize) {
+                // update per-page value and refresh
+              },
+            ),
           ],
         ),
       ),

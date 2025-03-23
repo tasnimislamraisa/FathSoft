@@ -25,6 +25,8 @@ export 'package:task_1_ios_app/presentation/screens/dashboard-screen/dashboard-w
 export 'package:task_1_ios_app/presentation/screens/dashboard-screen/dashboard-widget/revenue-overview-chart.dart';
 export 'package:task_1_ios_app/presentation/screens/dashboard-screen/dashboard-widget/sales-performance-chart.dart';
 export 'package:task_1_ios_app/presentation/screens/dashboard-screen/dashboard-widget/simple-card.dart';
+export 'package:task_1_ios_app/presentation/screens/dashboard-screen/land-property-screen.dart';
+export 'package:task_1_ios_app/presentation/screens/dashboard-screen/rats-apartment-screen.dart';
 export 'package:task_1_ios_app/presentation/screens/edit-screen/edit-screen.dart';
 export 'package:task_1_ios_app/presentation/screens/home-screen/home-screen-widgets/build-grid-menu.dart';
 export 'package:task_1_ios_app/presentation/screens/home-screen/home-screen-widgets/build-user-card.dart';
@@ -38,5 +40,7 @@ export 'package:task_1_ios_app/presentation/screens/project-control-screen/proje
 export 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/pagination-widget.dart';
 export 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/project-app-bar-widget.dart';
 export 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/search-widget.dart';
+export 'package:task_1_ios_app/presentation/screens/project-control-screen/project-types-screen.dart';
+export 'package:task_1_ios_app/presentation/screens/project-control-screen/projects-screen.dart';
 export 'package:task_1_ios_app/presentation/screens/register/register_screen.dart';
 export 'package:task_1_ios_app/utility/app-color.dart';
