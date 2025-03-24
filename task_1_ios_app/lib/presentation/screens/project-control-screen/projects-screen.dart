@@ -1,4 +1,5 @@
 import 'package:task_1_ios_app/my-imports.dart';
+import 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/project-details-dialog.dart';
 
 class ProjectsScreen extends StatelessWidget {
   const ProjectsScreen({super.key});
@@ -93,7 +94,7 @@ class ProjectsScreen extends StatelessWidget {
                   width: 8,
                 ),
                 _tableCell(item['code']!, flex: 2),
-                _viewButton(flex: 2),
+                _viewButton(flex: 2, project: item),
                 const SizedBox(
                   width: 8,
                 ),
@@ -155,7 +156,29 @@ class ProjectsScreen extends StatelessWidget {
     );
   }
 
-  Widget _viewButton({int flex = 1}) {
+  Widget _viewButton({int flex = 1, Map<String, String>? project}) {
+    return Expanded(
+      flex: flex,
+      child: ElevatedButton(
+        onPressed: () {
+          if (project != null) {
+            Get.dialog(ProjectDetailsDialog(project: project));
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.orange,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          minimumSize: const Size(double.infinity, 30),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        child: const Text("View", style: TextStyle(color: Colors.white)),
+      ),
+    );
+  }
+
+/*  Widget _viewButton({int flex = 1}) {
     return Expanded(
       flex: flex,
       child: ElevatedButton(
@@ -171,7 +194,7 @@ class ProjectsScreen extends StatelessWidget {
         child: const Text("View", style: TextStyle(color: Colors.white)),
       ),
     );
-  }
+  }*/
 
   Widget _statusTag(String status, {int flex = 1}) {
     return Expanded(
