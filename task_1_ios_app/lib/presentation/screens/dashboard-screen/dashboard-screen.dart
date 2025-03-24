@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:task_1_ios_app/my-imports.dart';
+import 'package:task_1_ios_app/presentation/screens/dashboard-screen/dashboard-widget/filterbar-with-dropdown-widget.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -64,79 +65,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.white,
-                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextButton.icon(
-                        onPressed: () {
-                          setState(() => showFilters = !showFilters);
-                        },
-                        icon: Icon(Icons.menu),
-                        label: Text('Filter'),
-                      ),
-                    ),
-                    Expanded(
-                      child: PopupMenuButton<String>(
-                        onSelected: (value) =>
-                            setState(() => selectedDateFilter = value),
-                        itemBuilder: (context) {
-                          return dateOptions
-                              .map((option) => PopupMenuItem(
-                                    value: option,
-                                    child: Text(option),
-                                  ))
-                              .toList();
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          height: 44,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey.shade300),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Icon(Icons.calendar_today_outlined, size: 18),
-                              Text(
-                                selectedDateFilter,
-                                style: TextStyle(fontSize: 14),
-                              ),
-                              Icon(Icons.expand_more),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              FilterBarWithDropdown(
+                showFilters: showFilters,
+                selectedDateFilter: selectedDateFilter,
+                dateOptions: dateOptions,
+                onToggleFilter: (val) => setState(() => showFilters = val),
+                onDateFilterSelected: (val) =>
+                    setState(() => selectedDateFilter = val),
+                selectedLand: selectedLand,
+                selectedPlot: selectedPlot,
+                landList: landList,
+                plotMap: plotMap,
+                onLandChanged: (val) => setState(() {
+                  selectedLand = val;
+                  selectedPlot = null;
+                }),
+                onPlotChanged: (val) => setState(() => selectedPlot = val),
               ),
-              if (showFilters) ...[
-                const SizedBox(height: 12),
-                _buildDropdownField(
-                  label: 'Select Land',
-                  value: selectedLand,
-                  onChanged: (value) => setState(() {
-                    selectedLand = value;
-                    selectedPlot = null; // reset plot when land changes
-                  }),
-                  items: landList,
-                ),
-                const SizedBox(height: 12),
-                _buildDropdownField(
-                  label: 'Select Plot',
-                  value: selectedPlot,
-                  onChanged: (value) => setState(() => selectedPlot = value),
-                  items: selectedLand == null ? [] : plotMap[selectedLand]!,
-                ),
-              ],
               const SizedBox(height: 16),
               BuildGradientCard(
                   'Sales Amount', '12,000 TK', Icons.show_chart, Colors.blue),
