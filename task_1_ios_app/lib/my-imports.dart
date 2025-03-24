@@ -39,6 +39,7 @@ export 'package:task_1_ios_app/presentation/screens/profile-screen/profile-scree
 export 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/add-button-widget.dart';
 export 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/pagination-widget.dart';
 export 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/project-app-bar-widget.dart';
+export 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/project-details-dialog.dart';
 export 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/search-widget.dart';
 export 'package:task_1_ios_app/presentation/screens/project-control-screen/project-types-screen.dart';
 export 'package:task_1_ios_app/presentation/screens/project-control-screen/projects-screen.dart';

@@ -27,7 +27,10 @@ class ProjectTypeScreen extends StatelessWidget {
 
             // Add Type Button
 
-            AddButton(title: "Add Type"),
+            AddButton(
+              title: "Add Type",
+              onTap: () {},
+            ),
 
             const SizedBox(height: 12),
 

@@ -1,5 +1,5 @@
 import 'package:task_1_ios_app/my-imports.dart';
-import 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/project-details-dialog.dart';
+import 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/add-project-dialog.dart';
 
 class ProjectsScreen extends StatelessWidget {
   const ProjectsScreen({super.key});
@@ -37,7 +37,12 @@ class ProjectsScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 FilterCard(),
                 const SizedBox(height: 12),
-                const AddButton(title: 'Add Project'),
+                AddButton(
+                  title: 'Add Project',
+                  onTap: () {
+                    Get.dialog(const AddProjectDialog());
+                  },
+                ),
                 const SizedBox(height: 12),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
