@@ -1,5 +1,6 @@
 import 'package:task_1_ios_app/my-imports.dart';
 import 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/add-project-dialog.dart';
+import 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/site-view-dialog.dart';
 
 class ProjectsScreen extends StatelessWidget {
   const ProjectsScreen({super.key});
@@ -35,8 +36,8 @@ class ProjectsScreen extends StatelessWidget {
               children: [
                 Search(),
                 const SizedBox(height: 16),
-                FilterCard(),
-                const SizedBox(height: 12),
+                //FilterCard(),
+                //const SizedBox(height: 12),
                 AddButton(
                   title: 'Add Project',
                   onTap: () {
@@ -103,7 +104,7 @@ class ProjectsScreen extends StatelessWidget {
                 const SizedBox(
                   width: 8,
                 ),
-                _viewButton(flex: 2),
+                _viewSiteButton(projectName: item['name']!),
                 const SizedBox(
                   width: 8,
                 ),
@@ -177,6 +178,24 @@ class ProjectsScreen extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
+        ),
+        child: const Text("View", style: TextStyle(color: Colors.white)),
+      ),
+    );
+  }
+
+  _viewSiteButton({required String projectName}) {
+    return Expanded(
+      flex: 2,
+      child: ElevatedButton(
+        onPressed: () {
+          Get.dialog(SiteViewDialog(projectName: projectName));
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.orange,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          minimumSize: const Size(double.infinity, 30),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
         child: const Text("View", style: TextStyle(color: Colors.white)),
       ),

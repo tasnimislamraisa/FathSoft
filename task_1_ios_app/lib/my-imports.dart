@@ -38,6 +38,7 @@ export 'package:task_1_ios_app/presentation/screens/notification-screen/notifica
 export 'package:task_1_ios_app/presentation/screens/profile-screen/profile-screen.dart';
 export 'package:task_1_ios_app/presentation/screens/project-control-screen/buildings-sites-screen.dart';
 export 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/add-button-widget.dart';
+export 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/add-stage-widget.dart';
 export 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/pagination-widget.dart';
 export 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/project-app-bar-widget.dart';
 export 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/project-details-dialog.dart';
