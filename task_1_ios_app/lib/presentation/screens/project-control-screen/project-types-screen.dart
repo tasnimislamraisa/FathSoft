@@ -1,4 +1,5 @@
 import 'package:task_1_ios_app/my-imports.dart';
+import 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/add-type-dialog.dart';
 
 class ProjectTypeScreen extends StatelessWidget {
   const ProjectTypeScreen({super.key});
@@ -29,8 +30,17 @@ class ProjectTypeScreen extends StatelessWidget {
 
             AddButton(
               title: "Add Type",
-              onTap: () {},
+              onTap: () {
+                Get.dialog(const AddTypeDialog());
+              },
             ),
+            /*
+            AddButton(
+                  title: 'Add Project',
+                  onTap: () {
+                    Get.dialog(const AddProjectDialog());
+                  },
+                ),*/
 
             const SizedBox(height: 12),
 
