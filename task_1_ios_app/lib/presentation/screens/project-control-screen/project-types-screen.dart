@@ -110,6 +110,7 @@ class ProjectTypeScreen extends StatelessWidget {
                                         onPressed: () {},
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.blue,
+                                          foregroundColor: Colors.white,
                                           minimumSize: const Size(60, 35),
                                         ),
                                         child: const Text("Edit"),
@@ -119,6 +120,7 @@ class ProjectTypeScreen extends StatelessWidget {
                                         onPressed: () {},
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.red,
+                                          foregroundColor: Colors.white,
                                           minimumSize: const Size(60, 35),
                                         ),
                                         child: const Text("Delete"),
