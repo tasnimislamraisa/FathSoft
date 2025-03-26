@@ -1,3 +1,4 @@
+import 'package:http/http.dart' as http;
 import 'package:task_1_ios_app/my-imports.dart';
 
 class LogInScreen extends StatefulWidget {
@@ -8,6 +9,7 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
+  final _authController = AuthController();
   final TextEditingController _emailTEController = TextEditingController();
   final TextEditingController _passwordTEController = TextEditingController();
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
@@ -53,9 +55,10 @@ class _LogInScreenState extends State<LogInScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
+                //log in button
                 Center(
                   child: TextButton(
-                    onPressed: _onTapNextButton,
+                    onPressed: _loginUser,
                     child: const Text(
                       'Login',
                       style:
@@ -107,13 +110,56 @@ class _LogInScreenState extends State<LogInScreen> {
     );
   }
 
-  void _onTapNextButton() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const DashboardScreen(),
-      ),
-    );
+  // login button
+  Future<void> _loginUser() async {
+    final String email = _emailTEController.text.trim();
+    final String password = _passwordTEController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      Get.snackbar('Error', 'Email and password cannot be empty');
+      return;
+    }
+
+    const String url = Urls.logInUrl;
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"email": email, "password": password}),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonData = jsonDecode(response.body);
+        final token = jsonData['token'];
+
+        if (token != null) {
+          // Save token in memory and SharedPreferences
+          await _authController.saveAccessToken(token);
+
+          // Extract email and generate username
+          final String userEmail = jsonData['email'] ?? email;
+          final String username = userEmail.split('@').first.capitalizeFirst!;
+
+          // Save email and username in SharedPreferences
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('user-email', userEmail);
+          await prefs.setString('user-name', username);
+
+          // Navigate to Dashboard
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const DashboardScreen()),
+          );
+          Get.snackbar('Login Successful', 'Welcome $username!');
+        }
+      } else {
+        Get.snackbar('Login Failed', 'Invalid credentials');
+      }
+    } catch (e) {
+      print("Login error: $e");
+      Get.snackbar('Error', 'Something went wrong');
+    }
   }
 
   void _onTapForgetPassword() {

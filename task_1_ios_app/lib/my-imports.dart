@@ -1,3 +1,5 @@
+export 'dart:convert';
+
 export 'package:fl_chart/fl_chart.dart';
 export 'package:flutter/cupertino.dart' hide RefreshCallback;
 export 'package:flutter/gestures.dart';
@@ -10,6 +12,7 @@ export 'package:shared_preferences/shared_preferences.dart';
 export 'package:task_1_ios_app/controller_binder.dart';
 export 'package:task_1_ios_app/data/models/network-response.dart';
 export 'package:task_1_ios_app/data/services/network-caller.dart';
+export 'package:task_1_ios_app/data/utils/urls.dart';
 export 'package:task_1_ios_app/presentation/controller/auth-controller.dart';
 export 'package:task_1_ios_app/presentation/controller/bottom-nav-bar-controller.dart';
 export 'package:task_1_ios_app/presentation/screens/bottom-nav-bar-screen/bottom-nav-bar-screen.dart';

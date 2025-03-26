@@ -6,7 +6,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  # sdk: ^3.5.4   (raisa)
+  # sdk: ^3.5.4   (raisa-ios)
+  # sdk: ^3.5.3  (raisa-windows)
   sdk: ^3.5.4
 
 

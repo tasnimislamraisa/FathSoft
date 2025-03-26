@@ -1,3 +1,4 @@
+import 'package:http/http.dart' as http;
 import 'package:task_1_ios_app/my-imports.dart';
 
 class Register extends StatefulWidget {
@@ -114,13 +115,69 @@ class _RegisterState extends State<Register> {
   }
 
   void _registerUser() async {
+    final name = _fnTEController.text.trim();
+    final email = _emailTEController.text.trim();
+    final password = _passwordTEController.text;
+
+    if (name.isEmpty || email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("All fields are required")),
+      );
+      return;
+    }
+
+    try {
+      final response = await http.post(
+        Uri.parse(Urls.registerUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "username": name,
+          "email": email,
+          "password": password,
+        }),
+      );
+
+      final responseData = jsonDecode(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final token = responseData["token"];
+        if (token != null) {
+          await AuthController().saveAccessToken(token);
+          _clearText();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Registration successful")),
+          );
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const LogInScreen()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Token not found in response")),
+          );
+        }
+      } else {
+        final error = responseData["error"] ?? "Registration failed";
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error)),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: $e")),
+      );
+    }
+  }
+
+/*  void _registerUser() async {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => const LogInScreen(),
       ),
     );
-  }
+  }*/
 
   void _clearText() {
     _emailTEController.clear();

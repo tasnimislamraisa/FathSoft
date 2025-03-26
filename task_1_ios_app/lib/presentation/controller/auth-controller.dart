@@ -1,4 +1,12 @@
+import 'package:http/http.dart' as http;
 import 'package:task_1_ios_app/my-imports.dart';
+
+extension StringCasingExtension on String {
+  String capitalize() {
+    if (isEmpty) return this;
+    return this[0].toUpperCase() + substring(1);
+  }
+}
 
 class AuthController {
   static String? accessToken;
@@ -23,9 +31,33 @@ class AuthController {
     return token;
   }
 
-  Future<bool> isLoggedIn() async {
-    String? token = await getAccessToken();
-    return token != null;
+  Future<Map<String, dynamic>?> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    const String url = Urls.logInUrl; // Update accordingly
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"email": email, "password": password}),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonData = jsonDecode(response.body);
+        final token = jsonData['token'];
+
+        if (token != null) {
+          await saveAccessToken(token);
+          return jsonData; //
+        }
+      } else {
+        print('Login failed: ${response.statusCode}');
+      }
+    } catch (e) {
+      print("Login error: $e");
+    }
+    return null;
   }
 
   Future<void> clearUserData() async {
