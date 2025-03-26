@@ -1,4 +1,5 @@
 import 'package:task_1_ios_app/my-imports.dart';
+import 'package:task_1_ios_app/presentation/screens/client-portal-screen/clients-screen.dart';
 
 class CustomDrawer extends StatelessWidget {
   final String selectedItem;
@@ -157,6 +158,27 @@ class CustomDrawer extends StatelessWidget {
                   selectedItem: selectedItem,
                   hasArrow: true,
                   onTap: () {},
+                ),
+                // Client Portal
+                ExpansionTile(
+                  initiallyExpanded: [
+                    'Clients',
+                  ].contains(selectedItem),
+                  leading: Icon(Icons.person_rounded),
+                  title: Text(
+                    'Client Portal',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  children: [
+                    DrawerItem(
+                      icon: Icons.person,
+                      label: 'Clients',
+                      selectedItem: selectedItem,
+                      onTap: () {
+                        Get.to(() => const AllClientsScreen());
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),

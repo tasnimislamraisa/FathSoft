@@ -1,6 +1,4 @@
 import 'package:task_1_ios_app/my-imports.dart';
-import 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/add-project-dialog.dart';
-import 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/site-view-dialog.dart';
 
 class ProjectsScreen extends StatelessWidget {
   const ProjectsScreen({super.key});
