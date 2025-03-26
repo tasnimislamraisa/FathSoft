@@ -57,8 +57,10 @@ class _AddStageDialogState extends State<AddStageDialog> {
             const SizedBox(height: 12),
 
             // Date Field
-            _label("Date"),
-            _dateField(),
+            ReusableDateSearch(
+              label: "Date",
+              controller: _dateController,
+            ),
 
             // Stage Name Field
             _label("Stage Name"),

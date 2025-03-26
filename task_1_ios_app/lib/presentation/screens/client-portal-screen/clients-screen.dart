@@ -1,6 +1,4 @@
 import 'package:task_1_ios_app/my-imports.dart';
-import 'package:task_1_ios_app/presentation/screens/client-portal-screen/client-portal-widget/add-client-dialog.dart';
-import 'package:task_1_ios_app/presentation/screens/client-portal-screen/client-portal-widget/client-action-button.dart';
 
 class AllClientsScreen extends StatelessWidget {
   const AllClientsScreen({super.key});
