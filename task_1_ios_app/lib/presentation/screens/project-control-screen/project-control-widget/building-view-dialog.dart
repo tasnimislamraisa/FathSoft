@@ -49,7 +49,7 @@ class BuildingDetailsDialog extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
                       child: Text(
@@ -65,25 +65,33 @@ class BuildingDetailsDialog extends StatelessWidget {
               );
             }).toList(),
 
-            // Status
+            // Status Row (only once, not inside loop)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Expanded(
-                    child: Text("Status:",
-                        style: TextStyle(fontWeight: FontWeight.w500)),
-                  ),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.green.shade100,
-                      borderRadius: BorderRadius.circular(6),
+                    child: Text(
+                      "Status:",
+                      style: TextStyle(fontWeight: FontWeight.w500),
                     ),
-                    child: const Text(
-                      'active',
-                      style: TextStyle(color: Colors.green),
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade100,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          status.toUpperCase(),
+                          style: const TextStyle(color: Colors.green),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -99,19 +107,19 @@ class BuildingDetailsDialog extends StatelessWidget {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ),
             const SizedBox(height: 10),
+
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SizedBox(
-                width: 600, // Adjust width based on your column content
+                width: 600,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Table Header
                     Container(
                       color: Colors.grey.shade200,
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        children: const [
+                      child: const Row(
+                        children: [
                           Expanded(
                               flex: 1,
                               child: Text('SL',
@@ -137,11 +145,10 @@ class BuildingDetailsDialog extends StatelessWidget {
                     ),
                     const Divider(height: 1),
 
-                    // Table Data
+                    // Table Rows
                     ...stages.asMap().entries.map((entry) {
-                      int index = entry.key;
-                      Map<String, String> stage = entry.value;
-
+                      final index = entry.key;
+                      final stage = entry.value;
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Row(
@@ -192,12 +199,14 @@ class BuildingDetailsDialog extends StatelessWidget {
               ),
             ),
 
+            const SizedBox(height: 12),
+
             // Add Stage Button
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Get.dialog(AddStageDialog());
+                  Get.dialog(const AddStageDialog());
                 },
                 icon: const Icon(Icons.add),
                 label: const Text('Add Stage'),
