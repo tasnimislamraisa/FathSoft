@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:task_1_ios_app/my-imports.dart';
 
 class BuildingViewActionDialog extends StatelessWidget {
   const BuildingViewActionDialog({super.key});
@@ -172,6 +171,7 @@ class BuildingViewActionDialog extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed: () {
                     // Show add stage dialog
+                    Get.dialog(AddStageDialog());
                   },
                   icon: const Icon(Icons.add),
                   label: const Text('+ Add Stage'),
