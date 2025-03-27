@@ -1,5 +1,5 @@
 import 'package:task_1_ios_app/my-imports.dart';
-import 'package:task_1_ios_app/presentation/screens/client-portal-screen/clients-screen.dart';
+import 'package:task_1_ios_app/presentation/screens/Land-and-plots-control-screen/plots-screen.dart';
 
 class CustomDrawer extends StatelessWidget {
   final String selectedItem;
@@ -129,7 +129,7 @@ class CustomDrawer extends StatelessWidget {
                       selectedItem: selectedItem,
                       onTap: () {
                         Navigator.pop(context);
-                        Get.to(() => const LandPropertyScreen());
+                        Get.to(() => const LandAndPropertyScreen());
                         // TODO: Navigation or state update
                       },
                     ),
@@ -140,7 +140,7 @@ class CustomDrawer extends StatelessWidget {
                       onTap: () {
                         // TODO: Navigation or state update
                         Navigator.pop(context);
-                        //   Get.to(() => const ProjectsScreen());
+                        Get.to(() => const PlotScreen());
                       },
                     ),
                   ],
