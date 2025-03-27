@@ -70,47 +70,6 @@ class CustomDrawer extends StatelessWidget {
                     ),
                   ],
                 ),
-
-                //  Other menu items
-                DrawerItem(
-                  icon: Icons.people_outline,
-                  label: 'CRM Management',
-                  selectedItem: selectedItem,
-                  onTap: () {},
-                ),
-                DrawerItem(
-                  icon: Icons.supervisor_account_outlined,
-                  label: 'HRM Management',
-                  selectedItem: selectedItem,
-                  onTap: () {},
-                ),
-                DrawerItem(
-                  icon: Icons.payments_outlined,
-                  label: 'Payroll Management',
-                  selectedItem: selectedItem,
-                  onTap: () {},
-                ),
-                DrawerItem(
-                  icon: Icons.bar_chart_outlined,
-                  label: 'Accounts Management',
-                  selectedItem: selectedItem,
-                  onTap: () {},
-                ),
-                DrawerItem(
-                  icon: Icons.settings_outlined,
-                  label: 'Administrator',
-                  selectedItem: selectedItem,
-                  hasArrow: true,
-                  onTap: () {},
-                ),
-                DrawerItem(
-                  icon: Icons.notifications_outlined,
-                  label: 'Marketing & Notifications',
-                  selectedItem: selectedItem,
-                  hasArrow: true,
-                  onTap: () {},
-                ),
-                //
                 ExpansionTile(
                   initiallyExpanded: [
                     'Project Type',
@@ -152,6 +111,81 @@ class CustomDrawer extends StatelessWidget {
                     ),
                   ],
                 ),
+                //land
+                ExpansionTile(
+                  initiallyExpanded: [
+                    'Land/Properties',
+                    'Plots',
+                  ].contains(selectedItem),
+                  leading: Icon(Icons.add_location),
+                  title: Text(
+                    'Land/Plots Control',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  children: [
+                    DrawerItem(
+                      icon: Icons.apartment,
+                      label: 'Land/Properties',
+                      selectedItem: selectedItem,
+                      onTap: () {
+                        Navigator.pop(context);
+                        Get.to(() => const LandPropertyScreen());
+                        // TODO: Navigation or state update
+                      },
+                    ),
+                    DrawerItem(
+                      icon: Icons.apartment,
+                      label: 'Plots',
+                      selectedItem: selectedItem,
+                      onTap: () {
+                        // TODO: Navigation or state update
+                        Navigator.pop(context);
+                        //   Get.to(() => const ProjectsScreen());
+                      },
+                    ),
+                  ],
+                ),
+                //  Other menu items
+                DrawerItem(
+                  icon: Icons.people_outline,
+                  label: 'CRM Management',
+                  selectedItem: selectedItem,
+                  onTap: () {},
+                ),
+                DrawerItem(
+                  icon: Icons.supervisor_account_outlined,
+                  label: 'HRM Management',
+                  selectedItem: selectedItem,
+                  onTap: () {},
+                ),
+                DrawerItem(
+                  icon: Icons.payments_outlined,
+                  label: 'Payroll Management',
+                  selectedItem: selectedItem,
+                  onTap: () {},
+                ),
+                DrawerItem(
+                  icon: Icons.bar_chart_outlined,
+                  label: 'Accounts Management',
+                  selectedItem: selectedItem,
+                  onTap: () {},
+                ),
+                DrawerItem(
+                  icon: Icons.settings_outlined,
+                  label: 'Administrator',
+                  selectedItem: selectedItem,
+                  hasArrow: true,
+                  onTap: () {},
+                ),
+                DrawerItem(
+                  icon: Icons.notifications_outlined,
+                  label: 'Marketing & Notifications',
+                  selectedItem: selectedItem,
+                  hasArrow: true,
+                  onTap: () {},
+                ),
+                //
+
                 DrawerItem(
                   icon: Icons.stacked_bar_chart_outlined,
                   label: 'Budgetary Control',

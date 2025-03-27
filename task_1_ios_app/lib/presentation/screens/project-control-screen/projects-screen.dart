@@ -102,7 +102,7 @@ class ProjectsScreen extends StatelessWidget {
                 const SizedBox(
                   width: 8,
                 ),
-                _viewSiteButton(projectName: item['name']!),
+                ViewSiteButton(projectName: item['name']!),
                 const SizedBox(
                   width: 8,
                 ),
@@ -110,7 +110,7 @@ class ProjectsScreen extends StatelessWidget {
                 const SizedBox(
                   width: 8,
                 ),
-                _actionButtons(flex: 3),
+                ActionButtons(flex: 3),
               ],
             ),
           );
@@ -182,24 +182,6 @@ class ProjectsScreen extends StatelessWidget {
     );
   }
 
-  _viewSiteButton({required String projectName}) {
-    return Expanded(
-      flex: 2,
-      child: ElevatedButton(
-        onPressed: () {
-          Get.dialog(SiteViewDialog(projectName: projectName));
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.orange,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          minimumSize: const Size(double.infinity, 30),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        ),
-        child: const Text("View", style: TextStyle(color: Colors.white)),
-      ),
-    );
-  }
-
 /*  Widget _viewButton({int flex = 1}) {
     return Expanded(
       flex: flex,
@@ -228,43 +210,6 @@ class ProjectsScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(status, style: const TextStyle(color: Colors.green)),
-      ),
-    );
-  }
-
-  Widget _actionButtons({int flex = 3}) {
-    return Expanded(
-      flex: flex,
-      child: Row(
-        children: [
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
-              padding: EdgeInsets.zero,
-              minimumSize: const Size(30, 30),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: Icon(Icons.edit),
-          ),
-          const SizedBox(width: 6),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
-              minimumSize: const Size(30, 30),
-              padding: EdgeInsets.zero,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: Icon(Icons.delete),
-          ),
-        ],
       ),
     );
   }
