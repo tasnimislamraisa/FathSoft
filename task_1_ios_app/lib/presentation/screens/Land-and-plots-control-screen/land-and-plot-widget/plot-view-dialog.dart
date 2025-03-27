@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:task_1_ios_app/presentation/screens/Land-and-plots-control-screen/land-and-plot-widget/plot-details-dialog.dart';
 
 class PlotViewDialog extends StatelessWidget {
   const PlotViewDialog({super.key});
@@ -122,7 +124,19 @@ class PlotViewDialog extends StatelessWidget {
                             child: Row(
                               children: [
                                 ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Get.dialog(PlotDetailsDialog(
+                                      plot: {
+                                        'plotName': 'Garden View Plot 2',
+                                        'plotShape': 'rectangle',
+                                        'plotArea': '0.28 Decimal',
+                                        'inventoryForSale': 'No',
+                                        'note': 'Test plot',
+                                        'propertyId': 'PRO-0002',
+                                        'propertyName': 'Property test 3',
+                                      },
+                                    ));
+                                  },
                                   style: ElevatedButton.styleFrom(
                                       minimumSize: Size(30, 40),
                                       backgroundColor: Colors.orange,
