@@ -10,6 +10,31 @@ class BuildingsSitesScreen extends StatefulWidget {
 class _BuildingsSitesScreenState extends State<BuildingsSitesScreen> {
   @override
   Widget build(BuildContext context) {
+    bool showDropdown = false;
+    bool showFilters = false;
+    DateTimeRange? selectedRange;
+    String selectedDateLabel = 'Filter by date';
+    String selectedDateFilter = 'Filter by date';
+    String? selectedLand;
+    String? selectedPlot;
+
+    final List<String> dateOptions = [
+      'Today',
+      'Yesterday',
+      'Last 7 Days',
+      'Last 30 Days',
+      'This Month',
+      'Last Month',
+      'Custom Range'
+    ];
+
+    final List<String> landList = ['Land A', 'Land B', 'Land C'];
+    final Map<String, List<String>> plotMap = {
+      'Land A': ['Plot A1', 'Plot A2'],
+      'Land B': ['Plot B1', 'Plot B2'],
+      'Land C': ['Plot C1', 'Plot C2'],
+    };
+
     final List<Map<String, String>> buildings = [
       {
         'project': 'Unique IT Center',
@@ -76,8 +101,26 @@ class _BuildingsSitesScreenState extends State<BuildingsSitesScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          FilterCard(),
-          const SizedBox(height: 16),
+          FilterBarWithDropdown(
+            showFilters: showFilters,
+            selectedDateFilter: selectedDateFilter,
+            dateOptions: dateOptions,
+            onToggleFilter: (val) => setState(() => showFilters = val),
+            onDateFilterSelected: (val) =>
+                setState(() => selectedDateFilter = val),
+            selectedLand: selectedLand,
+            selectedPlot: selectedPlot,
+            landList: landList,
+            plotMap: plotMap,
+            onLandChanged: (val) => setState(() {
+              selectedLand = val;
+              selectedPlot = null;
+            }),
+            onPlotChanged: (val) => setState(() => selectedPlot = val),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
           const Text("All Building/Site",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
           const SizedBox(height: 8),
@@ -85,7 +128,7 @@ class _BuildingsSitesScreenState extends State<BuildingsSitesScreen> {
             title: 'Add Building/Site',
             onTap: () {},
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           Search(),
           const SizedBox(height: 12),
           SingleChildScrollView(

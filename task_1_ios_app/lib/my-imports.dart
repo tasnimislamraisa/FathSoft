@@ -29,6 +29,7 @@ export 'package:task_1_ios_app/presentation/screens/dashboard-screen/dashboard-w
 export 'package:task_1_ios_app/presentation/screens/dashboard-screen/dashboard-widget/dashboard-appbar-widget.dart';
 export 'package:task_1_ios_app/presentation/screens/dashboard-screen/dashboard-widget/dashboard-card.dart';
 export 'package:task_1_ios_app/presentation/screens/dashboard-screen/dashboard-widget/filter-card-widget.dart';
+export 'package:task_1_ios_app/presentation/screens/dashboard-screen/dashboard-widget/filterbar-with-dropdown-widget.dart';
 export 'package:task_1_ios_app/presentation/screens/dashboard-screen/dashboard-widget/gradient-card-large.dart';
 export 'package:task_1_ios_app/presentation/screens/dashboard-screen/dashboard-widget/revenue-overview-chart.dart';
 export 'package:task_1_ios_app/presentation/screens/dashboard-screen/dashboard-widget/sales-performance-chart.dart';

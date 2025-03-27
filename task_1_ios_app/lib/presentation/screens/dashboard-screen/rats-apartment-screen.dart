@@ -11,6 +11,38 @@ class _RatsOrApartmentScreenState extends State<RatsOrApartmentScreen> {
   DateTime? selectedDate;
   final TextEditingController projectController = TextEditingController();
   final TextEditingController buildingController = TextEditingController();
+  bool showDropdown = false;
+  bool showFilters = false;
+  DateTimeRange? selectedRange;
+  String selectedDateLabel = 'Filter by date';
+  String selectedDateFilter = 'Filter by date';
+  String? selectedLand;
+  String? selectedPlot;
+
+  final List<String> dateOptions = [
+    'Today',
+    'Yesterday',
+    'Last 7 Days',
+    'Last 30 Days',
+    'This Month',
+    'Last Month',
+    'Custom Range'
+  ];
+
+  final List<String> landList = ['Land A', 'Land B', 'Land C'];
+  final Map<String, List<String>> plotMap = {
+    'Land A': ['Plot A1', 'Plot A2'],
+    'Land B': ['Plot B1', 'Plot B2'],
+    'Land C': ['Plot C1', 'Plot C2'],
+  };
+
+  void _selectPreset(String label, DateTimeRange range) {
+    setState(() {
+      selectedDateLabel = label;
+      selectedRange = range;
+      showDropdown = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +52,24 @@ class _RatsOrApartmentScreenState extends State<RatsOrApartmentScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          FilterCard(),
-          const SizedBox(height: 12),
+          FilterBarWithDropdown(
+            showFilters: showFilters,
+            selectedDateFilter: selectedDateFilter,
+            dateOptions: dateOptions,
+            onToggleFilter: (val) => setState(() => showFilters = val),
+            onDateFilterSelected: (val) =>
+                setState(() => selectedDateFilter = val),
+            selectedLand: selectedLand,
+            selectedPlot: selectedPlot,
+            landList: landList,
+            plotMap: plotMap,
+            onLandChanged: (val) => setState(() {
+              selectedLand = val;
+              selectedPlot = null;
+            }),
+            onPlotChanged: (val) => setState(() => selectedPlot = val),
+          ),
+          const SizedBox(height: 16),
           _gradientCard('Sales Amount', '00 TK', '📈', Colors.blue),
           _gradientCard('Purchase Amount', '00 TK', '🛍️', Colors.deepOrange),
           _gradientCard('Payment Due', '00 TK', '💳', Colors.deepPurple),

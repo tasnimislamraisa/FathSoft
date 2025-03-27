@@ -1,7 +1,45 @@
 import 'package:task_1_ios_app/my-imports.dart';
 
-class LandPropertyScreen extends StatelessWidget {
+class LandPropertyScreen extends StatefulWidget {
   const LandPropertyScreen({super.key});
+
+  @override
+  State<LandPropertyScreen> createState() => _LandPropertyScreenState();
+}
+
+class _LandPropertyScreenState extends State<LandPropertyScreen> {
+  bool showDropdown = false;
+  bool showFilters = false;
+  DateTimeRange? selectedRange;
+  String selectedDateLabel = 'Filter by date';
+  String selectedDateFilter = 'Filter by date';
+  String? selectedLand;
+  String? selectedPlot;
+
+  final List<String> dateOptions = [
+    'Today',
+    'Yesterday',
+    'Last 7 Days',
+    'Last 30 Days',
+    'This Month',
+    'Last Month',
+    'Custom Range'
+  ];
+
+  final List<String> landList = ['Land A', 'Land B', 'Land C'];
+  final Map<String, List<String>> plotMap = {
+    'Land A': ['Plot A1', 'Plot A2'],
+    'Land B': ['Plot B1', 'Plot B2'],
+    'Land C': ['Plot C1', 'Plot C2'],
+  };
+
+  void _selectPreset(String label, DateTimeRange range) {
+    setState(() {
+      selectedDateLabel = label;
+      selectedRange = range;
+      showDropdown = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +49,26 @@ class LandPropertyScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          FilterCard(),
+          FilterBarWithDropdown(
+            showFilters: showFilters,
+            selectedDateFilter: selectedDateFilter,
+            dateOptions: dateOptions,
+            onToggleFilter: (val) => setState(() => showFilters = val),
+            onDateFilterSelected: (val) =>
+                setState(() => selectedDateFilter = val),
+            selectedLand: selectedLand,
+            selectedPlot: selectedPlot,
+            landList: landList,
+            plotMap: plotMap,
+            onLandChanged: (val) => setState(() {
+              selectedLand = val;
+              selectedPlot = null;
+            }),
+            onPlotChanged: (val) => setState(() => selectedPlot = val),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
           // Top Summary Cards
           const InfoCardWithSubText(
             title: '📍 Total Land',
