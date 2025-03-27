@@ -1,4 +1,5 @@
 import 'package:task_1_ios_app/my-imports.dart';
+import 'package:task_1_ios_app/presentation/screens/project-control-screen/project-control-widget/building-view-action-dialog.dart';
 
 class BuildingsSitesScreen extends StatefulWidget {
   const BuildingsSitesScreen({super.key});
@@ -42,6 +43,7 @@ class _BuildingsSitesScreenState extends State<BuildingsSitesScreen> {
         'flatSize': '1560',
         'stage': 'Inprogress',
         'height': '14.0',
+        'status': 'active',
       },
       {
         'project': 'Unique IT Center',
@@ -49,6 +51,7 @@ class _BuildingsSitesScreenState extends State<BuildingsSitesScreen> {
         'flatSize': '1250',
         'stage': 'Inprogress',
         'height': '10.0',
+        'status': 'active',
       },
       {
         'project': 'Shoponogor IVA',
@@ -56,6 +59,7 @@ class _BuildingsSitesScreenState extends State<BuildingsSitesScreen> {
         'flatSize': '1600',
         'stage': 'Upcoming',
         'height': '14.0',
+        'status': 'active',
       },
       {
         'project': 'Shoponogor IVA',
@@ -63,6 +67,7 @@ class _BuildingsSitesScreenState extends State<BuildingsSitesScreen> {
         'flatSize': '1150',
         'stage': 'Inprogress',
         'height': '14.0',
+        'status': 'active',
       },
       {
         'project': 'Medical College',
@@ -70,6 +75,7 @@ class _BuildingsSitesScreenState extends State<BuildingsSitesScreen> {
         'flatSize': '--',
         'stage': '--',
         'height': '--',
+        'status': 'active',
       },
       {
         'project': 'Medical College',
@@ -77,6 +83,7 @@ class _BuildingsSitesScreenState extends State<BuildingsSitesScreen> {
         'flatSize': '--',
         'stage': '--',
         'height': '--',
+        'status': 'active',
       },
       {
         'project': 'Medical College',
@@ -84,6 +91,7 @@ class _BuildingsSitesScreenState extends State<BuildingsSitesScreen> {
         'flatSize': '--',
         'stage': '--',
         'height': '--',
+        'status': 'active',
       },
       {
         'project': 'Medical College',
@@ -91,6 +99,7 @@ class _BuildingsSitesScreenState extends State<BuildingsSitesScreen> {
         'flatSize': '--',
         'stage': '--',
         'height': '--',
+        'status': 'active',
       },
     ];
 
@@ -118,9 +127,7 @@ class _BuildingsSitesScreenState extends State<BuildingsSitesScreen> {
             }),
             onPlotChanged: (val) => setState(() => selectedPlot = val),
           ),
-          const SizedBox(
-            height: 16,
-          ),
+          const SizedBox(height: 16),
           const Text("All Building/Site",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
           const SizedBox(height: 8),
@@ -129,11 +136,12 @@ class _BuildingsSitesScreenState extends State<BuildingsSitesScreen> {
             onTap: () {},
           ),
           const SizedBox(height: 12),
-          Search(),
+          const Search(),
           const SizedBox(height: 12),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: DataTable(
+              columnSpacing: 20,
               columns: const [
                 DataColumn(label: Text('SL')),
                 DataColumn(label: Text('Project Name')),
@@ -141,6 +149,8 @@ class _BuildingsSitesScreenState extends State<BuildingsSitesScreen> {
                 DataColumn(label: Text('Average Flat Size')),
                 DataColumn(label: Text('Stage')),
                 DataColumn(label: Text('Building Height')),
+                DataColumn(label: Text('Status')),
+                DataColumn(label: Text('Action')),
               ],
               rows: List<DataRow>.generate(
                 buildings.length,
@@ -154,6 +164,23 @@ class _BuildingsSitesScreenState extends State<BuildingsSitesScreen> {
                       DataCell(Text(item['flatSize']!)),
                       DataCell(Text(item['stage']!)),
                       DataCell(Text(item['height']!)),
+                      DataCell(_statusBadge(item['status']!)),
+                      DataCell(Row(
+                        children: [
+                          _actionButton("View", Colors.orange, () {
+                            Get.dialog(BuildingViewActionDialog());
+                            // TODO: Show view dialog
+                          }),
+                          const SizedBox(width: 6),
+                          _actionButton("Edit", Colors.blue, () {
+                            // TODO: Edit logic
+                          }),
+                          const SizedBox(width: 6),
+                          _actionButton("Delete", Colors.red, () {
+                            // TODO: Delete logic
+                          }),
+                        ],
+                      )),
                     ],
                   );
                 },
@@ -167,9 +194,38 @@ class _BuildingsSitesScreenState extends State<BuildingsSitesScreen> {
             selectedPageSize: 8,
             onPageChanged: (page) {},
             onPageSizeChanged: (size) {},
-          )
+          ),
         ],
       ),
+    );
+  }
+
+  Widget _statusBadge(String status) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.green.shade100,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Text(
+        status,
+        style: const TextStyle(color: Colors.green),
+      ),
+    );
+  }
+
+  Widget _actionButton(String label, Color color, VoidCallback onPressed) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      ),
+      child: Text(label),
     );
   }
 }
