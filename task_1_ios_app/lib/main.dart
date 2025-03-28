@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialBinding: ControllerBinder(),
       home: const LogInScreen(),
+      //home: const DashboardScreen(),
 
       // Localization support
       localizationsDelegates: const [
