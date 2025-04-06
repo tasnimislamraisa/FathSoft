@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
       title: 'IOS App',
       debugShowCheckedModeBanner: false,
       initialBinding: ControllerBinder(),
-      home: const LogInScreen(),
+      home: const DashboardScreen(),
+      //home: const LogInScreen(),
 
       // Localization support
       localizationsDelegates: const [
