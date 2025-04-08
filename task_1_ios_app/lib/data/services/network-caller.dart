@@ -95,6 +95,105 @@ class NetworkCaller {
       );
     }
   }
+  Future<NetworkResponse> putRequest({
+    required String url,
+    required String? token,
+    Map<String, dynamic>? body,
+  }) async {
+    try {
+      final String finalToken = token ?? AuthController.accessToken ?? '';
+
+      final response = await http.put(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          if (finalToken.isNotEmpty)
+            'Authorization': 'Bearer $finalToken',
+        },
+        body: jsonEncode(body),
+      );
+
+      _responseLog(
+        response.statusCode == 200,
+        url,
+        response.statusCode,
+        response.body,
+        response.headers,
+      );
+
+      if (response.statusCode == 200) {
+        return NetworkResponse(
+          statusCode: response.statusCode,
+          isSuccess: true,
+          responseData: jsonDecode(response.body),
+        );
+      } else {
+        if (response.statusCode == 401) {
+          await _movedToLogin();
+        }
+        return NetworkResponse(
+          statusCode: response.statusCode,
+          isSuccess: false,
+          errorMsg: response.body,
+        );
+      }
+    } catch (e) {
+      _responseLog(false, url, -1, {}, {}, e);
+      return NetworkResponse(
+        statusCode: -1,
+        isSuccess: false,
+        errorMsg: e.toString(),
+      );
+    }
+  }
+  Future<NetworkResponse> deleteRequest({
+    required String url,
+    String? token,
+  }) async {
+    try {
+      final String finalToken = token ?? AuthController.accessToken ?? '';
+      final response = await http.delete(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          if (finalToken.isNotEmpty)
+            'Authorization': 'Bearer $finalToken',
+        },
+      );
+
+      _responseLog(
+        response.statusCode == 200,
+        url,
+        response.statusCode,
+        response.body,
+        response.headers,
+      );
+
+      if (response.statusCode == 200) {
+        return NetworkResponse(
+          statusCode: response.statusCode,
+          isSuccess: true,
+          responseData: jsonDecode(response.body),
+        );
+      } else {
+        if (response.statusCode == 401) {
+          await _movedToLogin();
+        }
+        return NetworkResponse(
+          statusCode: response.statusCode,
+          isSuccess: false,
+          errorMsg: response.body,
+        );
+      }
+    } catch (e) {
+      _responseLog(false, url, -1, {}, {}, e);
+      return NetworkResponse(
+        statusCode: -1,
+        isSuccess: false,
+        errorMsg: e.toString(),
+      );
+    }
+  }
 
   void _requestLog(String url, Map<String, dynamic> params,
       Map<String, dynamic> body, String token) {

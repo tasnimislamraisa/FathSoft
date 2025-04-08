@@ -1,7 +1,25 @@
 import 'package:task_1_ios_app/my-imports.dart';
 
-class ProjectsScreen extends StatelessWidget {
+class ProjectsScreen extends StatefulWidget {
   const ProjectsScreen({super.key});
+
+  @override
+  _ProjectsScreenState createState() => _ProjectsScreenState();
+}
+
+
+class _ProjectsScreenState extends State<ProjectsScreen> {
+  final AuthController authController = AuthController();
+  late final NetworkCaller networkCaller;
+
+  @override
+  void initState() {
+    super.initState();
+    networkCaller = NetworkCaller(
+      logger: Logger(),
+      authController: authController,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,14 +29,16 @@ class ProjectsScreen extends StatelessWidget {
         'location': 'Dhaka',
         'stage': 'Inprogress',
         'code': 'UT',
-        'status': 'active'
+        'status': 'active',
+        'id': '6',
       },
       {
         'name': 'Shopnonogor R/A',
         'location': 'Dhaka Mirpur',
         'stage': 'Inprogress',
         'code': 'SRA',
-        'status': 'active'
+        'status': 'active',
+        'id': '7',
       },
     ];
 
@@ -34,8 +54,6 @@ class ProjectsScreen extends StatelessWidget {
               children: [
                 Search(),
                 const SizedBox(height: 16),
-                //FilterCard(),
-                //const SizedBox(height: 12),
                 AddButton(
                   title: 'Add Project',
                   onTap: () {
@@ -82,35 +100,26 @@ class ProjectsScreen extends StatelessWidget {
             child: Row(
               children: [
                 _tableCell('${index + 1}', flex: 1),
-                const SizedBox(
-                  width: 8,
-                ),
+                const SizedBox(width: 8),
                 _tableCell(item['name']!, flex: 3),
-                const SizedBox(
-                  width: 8,
-                ),
+                const SizedBox(width: 8),
                 _tableCell(item['location']!, flex: 2),
-                const SizedBox(
-                  width: 8,
-                ),
+                const SizedBox(width: 8),
                 _tableCell(item['stage']!, flex: 2, bold: true),
-                const SizedBox(
-                  width: 8,
-                ),
+                const SizedBox(width: 8),
                 _tableCell(item['code']!, flex: 2),
                 _viewButton(flex: 2, project: item),
-                const SizedBox(
-                  width: 8,
-                ),
+                const SizedBox(width: 8),
                 ViewSiteButton(projectName: item['name']!),
-                const SizedBox(
-                  width: 8,
-                ),
+                const SizedBox(width: 8),
                 _statusTag(item['status']!, flex: 2),
-                const SizedBox(
-                  width: 8,
+                const SizedBox(width: 8),
+                ActionButtons(
+                  flex: 3,
+                  project: item,
+                  networkCaller: networkCaller,
+                  authController: authController,
                 ),
-                ActionButtons(flex: 3),
               ],
             ),
           );
@@ -155,7 +164,7 @@ class ProjectsScreen extends StatelessWidget {
       child: Text(
         text,
         style:
-            TextStyle(fontWeight: bold ? FontWeight.bold : FontWeight.normal),
+        TextStyle(fontWeight: bold ? FontWeight.bold : FontWeight.normal),
       ),
     );
   }
@@ -182,24 +191,6 @@ class ProjectsScreen extends StatelessWidget {
     );
   }
 
-/*  Widget _viewButton({int flex = 1}) {
-    return Expanded(
-      flex: flex,
-      child: ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.orange,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          minimumSize: const Size(double.infinity, 30),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-        child: const Text("View", style: TextStyle(color: Colors.white)),
-      ),
-    );
-  }*/
-
   Widget _statusTag(String status, {int flex = 1}) {
     return Expanded(
       flex: flex,
@@ -214,3 +205,5 @@ class ProjectsScreen extends StatelessWidget {
     );
   }
 }
+
+
