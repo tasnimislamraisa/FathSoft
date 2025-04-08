@@ -1,3 +1,4 @@
+import 'package:task_1_ios_app/data/models/projects-model/create-project-model.dart';
 import 'package:task_1_ios_app/my-imports.dart';
 import 'package:task_1_ios_app/presentation/controller/create-project-controller.dart';
 
@@ -16,12 +17,13 @@ class _AddProjectDialogState extends State<AddProjectDialog> {
   final TextEditingController _startDate = TextEditingController();
   final TextEditingController _handoverDate = TextEditingController();
   final TextEditingController _projectCode = TextEditingController(
-      text: "PRJ-${DateTime.now().millisecondsSinceEpoch}");
-  String? _stage, _projectType, _status;
+    text: "PRJ-${DateTime.now().millisecondsSinceEpoch}",
+  );
 
-  final List<String> _stages = ['1', '2', '3'];
-  final List<String> _types = ['0', '1'];
-  final List<String> _statuses = ['0', '1'];
+  String? _stage, _projectType, _status;
+  final List<String> _stages = ['Planning', 'Inprogress', 'Completed'];
+  final List<String> _types = ['Residential', 'Commercial'];
+  final List<String> _statuses = ['active', 'inactive'];
 
   bool _isSubmitting = false;
 
@@ -56,7 +58,7 @@ class _AddProjectDialogState extends State<AddProjectDialog> {
                       _fieldLabel("Approx. Hand Over Date:"),
                       _dateField(_handoverDate),
                       _fieldLabel("Project Code:"),
-                      _textField(_projectCode, "", readOnly: true),
+                      _textField(_projectCode, "Auto-generated"),
                       _fieldLabel("Project Type:"),
                       _dropdownField(_types, _projectType,
                           (val) => setState(() => _projectType = val)),
@@ -68,27 +70,9 @@ class _AddProjectDialogState extends State<AddProjectDialog> {
                           (val) => setState(() => _status = val)),
                       const SizedBox(height: 20),
                       AddButton(
-                        title: "Add",
-                        onTap: () async {
-                          final Map<String, dynamic> projectData = {
-                            "project_name": "Amazon233333",
-                            "location": "dhaka",
-                            "contact_number": "01800000000",
-                            "project_start_date": "2025-12-01",
-                            "approx_handover_date": "2026-12-01",
-                            "project_code":
-                                "PRJ-${DateTime.now().millisecondsSinceEpoch}",
-                            "stage": "1",
-                            "project_type": "0",
-                            "status": "1",
-                            "logo": "placeholder_logo", // Must not be null
-                            "architect_drawing_file":
-                                "placeholder_file", // Must not be null
-                          };
-
-                          await createProject(projectData);
-                        },
-                      ),
+                        title: _isSubmitting ? "Adding..." : "Add",
+                        onTap: _isSubmitting ? null : () => _submitForm(),
+                      )
                     ],
                   ),
                 ),
@@ -108,7 +92,8 @@ class _AddProjectDialogState extends State<AddProjectDialog> {
         children: [
           const Text("Add Project",
               style: TextStyle(fontWeight: FontWeight.bold)),
-          IconButton(icon: const Icon(Icons.close), onPressed: () => Get.back())
+          IconButton(
+              icon: const Icon(Icons.close), onPressed: () => Get.back()),
         ],
       ),
     );
@@ -174,5 +159,29 @@ class _AddProjectDialogState extends State<AddProjectDialog> {
           .map((e) => DropdownMenuItem(value: e, child: Text(e)))
           .toList(),
     );
+  }
+
+  Future<void> _submitForm() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isSubmitting = true);
+
+    CreateProjectModel model = CreateProjectModel(
+      companyId: "1", // hardcoded, or fetch from logged-in user
+      projectName: _projectName.text.trim(),
+      location: _location.text.trim(),
+      contactNumber: _contact.text.trim(),
+      projectStartDate: _startDate.text.trim(),
+      approxHandoverDate: _handoverDate.text.trim(),
+      projectCode: _projectCode.text.trim(),
+      stage: _stage!,
+      projectType: _projectType!,
+      status: _status!,
+      logo: "default_logo.png", // MUST NOT BE NULL
+      architectDrawingFile: "default_drawing.pdf", // MUST NOT BE NULL
+    );
+
+    await createProjectApi(model);
+    setState(() => _isSubmitting = false);
   }
 }

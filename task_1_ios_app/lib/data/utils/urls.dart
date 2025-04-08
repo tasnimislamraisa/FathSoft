@@ -4,4 +4,5 @@ class Urls {
   static const String registerUrl = "$_baseUrl/auth/register";
   static const String logInUrl = '$_baseUrl/auth/login';
   static const String createProjectUrl = '$_baseUrl/project/create?';
+  static const String viewAllProjectsUrl = '$_baseUrl/project/all';
 }

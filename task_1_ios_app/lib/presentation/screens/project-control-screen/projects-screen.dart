@@ -1,8 +1,13 @@
 import 'package:task_1_ios_app/my-imports.dart';
 
-class ProjectsScreen extends StatelessWidget {
+class ProjectsScreen extends StatefulWidget {
   const ProjectsScreen({super.key});
 
+  @override
+  State<ProjectsScreen> createState() => _ProjectsScreenState();
+}
+
+class _ProjectsScreenState extends State<ProjectsScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, String>> projects = [
@@ -199,7 +204,6 @@ class ProjectsScreen extends StatelessWidget {
       ),
     );
   }*/
-
   Widget _statusTag(String status, {int flex = 1}) {
     return Expanded(
       flex: flex,

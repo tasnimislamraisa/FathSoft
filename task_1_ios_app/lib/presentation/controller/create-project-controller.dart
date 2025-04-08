@@ -1,41 +1,31 @@
 import 'package:http/http.dart' as http;
+import 'package:task_1_ios_app/data/models/projects-model/create-project-model.dart';
 import 'package:task_1_ios_app/my-imports.dart';
 
-Future<void> createProject(Map<String, dynamic> projectData) async {
-  final authController = AuthController();
-  final token = await authController.getAccessToken();
-
-  if (token == null) {
-    Get.snackbar('Failed', 'Authorization token missing');
-    return;
-  }
-
-  // Fallback values for required fields
-  projectData['logo'] ??= 'default_logo';
-  projectData['architect_drawing_file'] ??= 'default_file';
+Future<void> createProjectApi(CreateProjectModel model) async {
+  const url = Urls.createProjectUrl;
+  final token = await AuthController().getAccessToken(); // 🔐 Get token
 
   try {
     final response = await http.post(
-      Uri.parse(Urls.createProjectUrl),
+      Uri.parse(url),
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
+        "Authorization": "Bearer $token", // ✅ Include token
       },
-      body: jsonEncode(projectData),
+      body: jsonEncode(model.toJson()),
     );
 
-    print("Status: ${response.statusCode}");
-    print("Body: ${response.body}");
+    print("Status Code: ${response.statusCode}");
+    print("Response Body: ${response.body}");
 
-    final json = jsonDecode(response.body);
-    if (response.statusCode == 201 && json['success'] == true) {
-      Get.back();
-      Get.snackbar('Success', json['message']);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      Get.back(); // Close dialog
+      Get.snackbar("Success", "Project created successfully");
     } else {
-      Get.snackbar('Failed', json['message'] ?? 'Something went wrong');
+      Get.snackbar("Error", "Failed to create project");
     }
   } catch (e) {
-    print('Exception: $e');
-    Get.snackbar('Failed', 'Internal Server Error');
+    Get.snackbar("Error", "Something went wrong: $e");
   }
 }
