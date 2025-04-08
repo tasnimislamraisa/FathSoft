@@ -1,4 +1,6 @@
+import 'package:task_1_ios_app/data/models/projects-model/project-model.dart';
 import 'package:task_1_ios_app/my-imports.dart';
+import 'package:task_1_ios_app/presentation/controller/view-all-projects.dart';
 
 class ProjectsScreen extends StatefulWidget {
   const ProjectsScreen({super.key});
@@ -8,25 +10,31 @@ class ProjectsScreen extends StatefulWidget {
 }
 
 class _ProjectsScreenState extends State<ProjectsScreen> {
+  List<Project> _projects = [];
+  bool _isLoading = true;
+
+  Future<void> loadProjects() async {
+    try {
+      final data = await ViewAllProjects();
+      setState(() {
+        _projects = data;
+        _isLoading = false;
+      });
+    } catch (e) {
+      print("Error loading projects: $e");
+      Get.snackbar('Error', 'Failed to load projects');
+      setState(() => _isLoading = false);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadProjects();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> projects = [
-      {
-        'name': 'Unique IT Center',
-        'location': 'Dhaka',
-        'stage': 'Inprogress',
-        'code': 'UT',
-        'status': 'active'
-      },
-      {
-        'name': 'Shopnonogor R/A',
-        'location': 'Dhaka Mirpur',
-        'stage': 'Inprogress',
-        'code': 'SRA',
-        'status': 'active'
-      },
-    ];
-
     return Scaffold(
       backgroundColor: AppColors.bgColor,
       appBar: const CustomProjectAppBar(title: 'All Projects'),
@@ -52,7 +60,11 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                   scrollDirection: Axis.horizontal,
                   child: SizedBox(
                     width: 720,
-                    child: _buildProjectsTable(context, projects),
+                    child: _isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : _projects.isEmpty
+                            ? const Center(child: Text("No projects found"))
+                            : _buildProjectsTable(context, _projects),
                   ),
                 ),
               ],
@@ -73,8 +85,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
     );
   }
 
-  Widget _buildProjectsTable(
-      BuildContext context, List<Map<String, String>> projects) {
+  Widget _buildProjectsTable(BuildContext context, List<Project> projects) {
     return Column(
       children: [
         _buildTableHeader(),
@@ -87,39 +98,18 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
             child: Row(
               children: [
                 _tableCell('${index + 1}', flex: 1),
-                const SizedBox(
-                  width: 8,
-                ),
-                _tableCell(item['name']!, flex: 3),
-                const SizedBox(
-                  width: 8,
-                ),
-                _tableCell(item['location']!, flex: 2),
-                const SizedBox(
-                  width: 8,
-                ),
-                _tableCell(item['stage']!, flex: 2, bold: true),
-                const SizedBox(
-                  width: 8,
-                ),
-                _tableCell(item['code']!, flex: 2),
+                _tableCell(item.projectName, flex: 3),
+                _tableCell(item.location, flex: 2),
+                _tableCell(item.stage, flex: 2, bold: true),
+                _tableCell(item.projectCode, flex: 2),
                 _viewButton(flex: 2, project: item),
-                const SizedBox(
-                  width: 8,
-                ),
-                ViewSiteButton(projectName: item['name']!),
-                const SizedBox(
-                  width: 8,
-                ),
-                _statusTag(item['status']!, flex: 2),
-                const SizedBox(
-                  width: 8,
-                ),
+                ViewSiteButton(projectName: item.projectName),
+                _statusTag(item.status, flex: 2),
                 ActionButtons(flex: 3),
               ],
             ),
           );
-        }).toList(),
+        }),
       ],
     );
   }
@@ -165,14 +155,20 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
     );
   }
 
-  Widget _viewButton({int flex = 1, Map<String, String>? project}) {
+  Widget _viewButton({int flex = 1, required Project project}) {
     return Expanded(
       flex: flex,
       child: ElevatedButton(
         onPressed: () {
-          if (project != null) {
-            Get.dialog(ProjectDetailsDialog(project: project));
-          }
+          Get.dialog(ProjectDetailsDialog(
+            project: {
+              'name': project.projectName,
+              'location': project.location,
+              'stage': project.stage,
+              'code': project.projectCode,
+              'status': project.status,
+            },
+          ));
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.orange,
