@@ -1,6 +1,7 @@
 import 'package:task_1_ios_app/data/models/projects-model/project-model.dart';
 import 'package:task_1_ios_app/my-imports.dart';
 import 'package:task_1_ios_app/presentation/controller/view-all-projects.dart';
+import 'package:task_1_ios_app/presentation/controller/view-project-by-id.dart';
 
 class ProjectsScreen extends StatefulWidget {
   const ProjectsScreen({super.key});
@@ -47,8 +48,6 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
               children: [
                 Search(),
                 const SizedBox(height: 16),
-                //FilterCard(),
-                //const SizedBox(height: 12),
                 AddButton(
                   title: 'Add Project',
                   onTap: () {
@@ -59,7 +58,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: SizedBox(
-                    width: 720,
+                    width: 1000,
                     child: _isLoading
                         ? const Center(child: CircularProgressIndicator())
                         : _projects.isEmpty
@@ -93,20 +92,32 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
         ...projects.asMap().entries.map((entry) {
           final index = entry.key;
           final item = entry.value;
-          return Container(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Row(
-              children: [
-                _tableCell('${index + 1}', flex: 1),
-                _tableCell(item.projectName, flex: 3),
-                _tableCell(item.location, flex: 2),
-                _tableCell(item.stage, flex: 2, bold: true),
-                _tableCell(item.projectCode, flex: 2),
-                _viewButton(flex: 2, project: item),
-                ViewSiteButton(projectName: item.projectName),
-                _statusTag(item.status, flex: 2),
-                ActionButtons(flex: 3),
-              ],
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _tableCell('${index + 1}', flex: 1),
+                  _spacer(),
+                  _tableCell(item.projectName, flex: 3),
+                  _spacer(),
+                  _tableCell(item.location, flex: 2),
+                  _spacer(),
+                  _tableCell(item.stage, flex: 2, bold: true),
+                  _spacer(),
+                  _tableCell(item.projectCode, flex: 2),
+                  _spacer(),
+                  _viewButton(flex: 2, project: item),
+                  _spacer(),
+                  ViewSiteButton(projectName: item.projectName),
+                  _spacer(),
+                  _statusTag(item.status, flex: 2),
+                  _spacer(),
+                  ActionButtons(flex: 3),
+                ],
+              ),
             ),
           );
         }),
@@ -121,13 +132,21 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
       child: Row(
         children: [
           _headerCell("SL", flex: 1),
+          _spacer(),
           _headerCell("Project Name", flex: 3),
+          _spacer(),
           _headerCell("Location", flex: 2),
+          _spacer(),
           _headerCell("Stage", flex: 2),
+          _spacer(),
           _headerCell("Project Code", flex: 2),
+          _spacer(),
           _headerCell("Project View", flex: 2),
+          _spacer(),
           _headerCell("Site View", flex: 2),
+          _spacer(),
           _headerCell("Status", flex: 2),
+          _spacer(),
           _headerCell("Actions", flex: 3),
         ],
       ),
@@ -149,8 +168,12 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
       flex: flex,
       child: Text(
         text,
-        style:
-            TextStyle(fontWeight: bold ? FontWeight.bold : FontWeight.normal),
+        overflow: TextOverflow.visible,
+        softWrap: false,
+        style: TextStyle(
+          fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+          fontSize: 14,
+        ),
       ),
     );
   }
@@ -159,16 +182,22 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
     return Expanded(
       flex: flex,
       child: ElevatedButton(
-        onPressed: () {
-          Get.dialog(ProjectDetailsDialog(
-            project: {
-              'name': project.projectName,
-              'location': project.location,
-              'stage': project.stage,
-              'code': project.projectCode,
-              'status': project.status,
-            },
-          ));
+        onPressed: () async {
+          try {
+            final data = await fetchProjectById(project.id);
+            Get.dialog(ProjectDetailsDialog(project: {
+              'name': data['project_name'] ?? '',
+              'location': data['location'] ?? '',
+              'stage': data['stage'] ?? '',
+              'code': data['project_code'] ?? '',
+              'status': data['status'] ?? '',
+              'contact': data['contact_number'] ?? '',
+              'start_date': data['project_start_date'] ?? '',
+              'handover_date': data['approx_handover_date'] ?? '',
+            }));
+          } catch (e) {
+            Get.snackbar('Error', 'Failed to load project details');
+          }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.orange,
@@ -183,34 +212,32 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
     );
   }
 
-/*  Widget _viewButton({int flex = 1}) {
-    return Expanded(
-      flex: flex,
-      child: ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.orange,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          minimumSize: const Size(double.infinity, 30),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-        child: const Text("View", style: TextStyle(color: Colors.white)),
-      ),
-    );
-  }*/
   Widget _statusTag(String status, {int flex = 1}) {
     return Expanded(
       flex: flex,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        constraints: const BoxConstraints(minWidth: 70),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
           color: Colors.green.shade100,
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Text(status, style: const TextStyle(color: Colors.green)),
+        child: Center(
+          child: Text(
+            status,
+            softWrap: false,
+            overflow: TextOverflow.visible,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.green,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
       ),
     );
   }
+
+  Widget _spacer({double width = 12}) => SizedBox(width: width);
 }
